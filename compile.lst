@@ -1,0 +1,72 @@
+coreutils
+bash
+which
+
+make
+gcc
+gcc-c++
+binutils
+patch
+
+git-core
+
+ncurses-devel
+zlib-devel
+zlib-static
+
+file
+tar
+gzip
+bzip2
+unzip
+wget
+gawk
+findutils
+diffutils
+gawk
+grep
+xz
+
+#gettext
+#texinfo
+#subversion
+#asciidoc
+
+perl
+perl-Thread-Queue
+perl-Data-Dumper
+perl-Switch
+python
+
+# clamav softethervpn/host 
+openssl-devel
+
+# apcupsd
+mailx
+
+# apcupsd
+#sysvinit-tools
+
+# kbr5
+libcom_err-devel
+
+# luajit
+glibc-devel.i686
+libgcc.i686
+
+# grilo
+perl-XML-Parser
+
+# classpath
+java-1.7.0-openjdk-devel
+
+# loudmouth
+#gtk-doc
+
+# rxtx
+java-1.7.0-openjdk
+
+# ...
+vim-enhanced
+ctags
+cscope

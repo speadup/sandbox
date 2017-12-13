@@ -1,0 +1,8 @@
+#!/bin/sh
+bindir=`dirname $0`
+rootdir=$1
+[ -f ${rootdir}/etc/centos-release ] || exit 1
+rootdir=`cd ${rootdir};pwd`
+shift
+echo yum --installroot=${rootdir} "$@"
+yum --nogpgcheck --installroot=${rootdir} "$@"
