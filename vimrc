@@ -1,11 +1,13 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+let s:rtpath='/opt/vim-bundle/bundles'
 " set the runtime path to include Vundle and initialize
-set rtp+=~/vim-bundle/bundles/Vundle.vim
+"set rtp+=/opt/vim-bundle/bundles/Vundle.vim
+let &rtp.=',' . s:rtpath . '/Vundle.vim'
 
-if !empty(glob('~/vim-bundle/bundles/Vundle.vim'))
-call vundle#begin('~/vim-bundle/bundles')
+if !empty(glob(s:rtpath . '/Vundle.vim'))
+call vundle#begin(s:rtpath)
 
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'WolfgangMehner/bash-support'
@@ -112,7 +114,7 @@ else
     "colorscheme default
     "let g:molokai_original = 1
     "let g:rehash256 = 1
-    if !empty(glob('~/vim-bundle/bundles/molokai'))
+    if !empty(glob(s:rtpath . '/molokai'))
         colorscheme molokai
     endif
 endif

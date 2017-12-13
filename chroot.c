@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h> 
 #include <signal.h> 
+#include <getopt.h>
 #include <sys/mount.h>
 #include <sys/wait.h>
 #include <sys/types.h>
@@ -35,7 +36,7 @@ int do_mount(const char *path, const char *type)
         printf("%s is mounted.\n", path);
         return 1;
     } else {
-        if(mount("none", path, type, 0, NULL) != 0) {
+        if(mount(type, path, type, 0, NULL) != 0) {
             printf("%s mount fail!\n");
             return -1;
         }
@@ -62,54 +63,82 @@ int do_unmount(const char *path)
 
 int main(int argc, char *argv[])
 {
+    int opt = 0;
     int pid = 0;
+    int uid = 500;
+    int gid = 0;
     int status = 0;
-    signal_init();
+    int i = 0;
+    const char *short_options = "g:u:";
+    const struct option long_options[] = {
+        {"gid", required_argument, NULL, 'g'},
+        {"uid", required_argument, NULL, 'u'},
+        {NULL, 0, NULL, 0},
+    };
+    while((opt = getopt_long(argc, argv, short_options, long_options, NULL)) != -1)
+    {
+        switch(opt) {
+        case 'g':
+            gid = atoi(optarg);
+            break;
+        case 'u':
+            uid = atoi(optarg);
+            break;
+        case '?':
+                 printf("Unknown option -%c\n\n", optopt);
+                 exit(1);
+        default:
+                 printf("What happened?\n\n");
+                 exit(1);
+        }
+    }
+#if 0
+    printf("optind=%d, argc=%d\n", optind, argc);
+    printf("uid=%d,gid=%d\n", uid, gid);
+    for(i = 0; i < argc; i++) {
+        printf("argv[%d]=%s\n", i, argv[i]);
+    }
+#endif
     setgroups(0, NULL);
     setgid(0);
     setuid(0);
-    if(argc >= 2)
-        status = chroot(argv[1]);
-    else
+    if(optind >= argc) {
         status = chroot(".");
+    } else {
+        status = chroot(argv[optind]);
+        optind++;
+    }
     printf("chroot=%d\n", status);
     if(status < 0)
-        return;
+        return 0;
     do_mount("/proc",    "proc");
     do_mount("/sys",     "sysfs");
     //do_mount("/dev",     "devtmpfs");
     do_mount("/dev/pts", "devpts");
     do_mount("/dev/shm", "tmpfs");
 
-    if((pid = fork()) == 0){
+    setgroups(0, NULL);
+    setgid(gid);
+    setuid(uid);
+    chdir("/home/compile");
 
-        setgroups(0, NULL);
-        setgid(0);
-        setuid(500);
-        chdir("/home/compile");
-
-        char **params = NULL;
-        int i = 0;
-        if(argc > 2){
-            params = malloc(sizeof(char *) * argc);
-            for(i = 2; i < argc; i++){
-                params[i-2] = argv[i];
-            }
-            params[argc -2] = NULL;
-        } else {
-            params = malloc(5);
-            params[0] = "/bin/bash";
-            params[1] = "-l";
-            params[2] = "-c";
-            params[3] = "exec /bin/bash";
-            params[4] = NULL;
-        }
-        char *env[] = {"TERM=xterm", "HOME=/home/compile", "USER=compile", "LOGNAME=compile", "SHELL=/bin/bash", "LANG=posix.UTF-8", NULL};
-        execve(params[0], params, env);
+    char **params = NULL;
+    if(optind >= argc){
+        params = malloc(5);
+        params[0] = "/bin/bash";
+        params[1] = "-l";
+        params[2] = "-c";
+        params[3] = "exec /bin/bash";
+        params[4] = NULL;
     } else {
-        while(wait(NULL) < 0);
+        params = malloc(sizeof(char *) * (argc - optind));
+        for(i = 0; i < argc - optind; i++){
+            params[i] = argv[optind + i];
+        }
+        params[i] = NULL;
     }
-    
+    char *env[] = {"TERM=xterm", "HOME=/home/compile", "USER=compile", "LOGNAME=compile", "SHELL=/bin/bash", "LANG=posix.UTF-8", NULL};
+    execve(params[0], params, env);
     printf("exit\n");
 
     return 0;
