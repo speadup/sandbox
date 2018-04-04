@@ -5,6 +5,7 @@ which
 make
 gcc
 gcc-c++
+glibc-devel
 binutils
 patch
 

@@ -48,22 +48,24 @@ rm -f ${bootpkg}
 touch ${rootdir}/etc/{fstab,resolv.conf}
 mkdir -p ${rootdir}/dev/{mapper,shm,pts,net}
 mkdir -p ${rootdir}/{opt,work}
-mknod ${rootdir}/dev/null c 1 3
-mknod ${rootdir}/dev/zero c 1 5
-mknod ${rootdir}/dev/random c 1 8
-mknod ${rootdir}/dev/urandom c 1 9
-mknod ${rootdir}/dev/console c 5 1
-mknod ${rootdir}/dev/rtc0 c 253 0
-mknod ${rootdir}/dev/mapper/control c 10 58
-mknod ${rootdir}/dev/net/tun c 10 200
-mknod ${rootdir}/dev/loop0 b 7 0
-mknod ${rootdir}/dev/loop1 b 7 1
-mknod ${rootdir}/dev/loop2 b 7 2
-mknod ${rootdir}/dev/loop3 b 7 3
-mknod ${rootdir}/dev/loop4 b 7 4
-mknod ${rootdir}/dev/loop5 b 7 5
-mknod ${rootdir}/dev/loop6 b 7 6
-mknod ${rootdir}/dev/loop7 b 7 7
+
+mknod -m600 ${rootdir}/dev/console c 5 1 
+mknod -m666  ${rootdir}/dev/null c 1 3 
+mknod -m666 ${rootdir}/dev/random c 1 8 
+mknod -m660 ${rootdir}/dev/rtc0 c 253 0
+mknod -m666 ${rootdir}/dev/tty c 5 0 
+mknod -m666 ${rootdir}/dev/urandom c 1 9 
+mknod -m666 ${rootdir}/dev/zero c 1 5 
+mknod -m660 ${rootdir}/dev/mapper/control c 10 58
+mknod -m666 ${rootdir}/dev/net/tun c 10 200 
+mknod -m660 ${rootdir}/dev/loop0 b 7 0 
+mknod -m660 ${rootdir}/dev/loop1 b 7 1 
+mknod -m660 ${rootdir}/dev/loop2 b 7 2 
+mknod -m660 ${rootdir}/dev/loop3 b 7 3 
+mknod -m660 ${rootdir}/dev/loop4 b 7 4 
+mknod -m660 ${rootdir}/dev/loop5 b 7 5 
+mknod -m660 ${rootdir}/dev/loop6 b 7 6 
+mknod -m660 ${rootdir}/dev/loop7 b 7 7 
 ln -s rtc0 ${rootdir}/dev/rtc
 ln -s /proc/self/fd ${rootdir}/dev/fd
 ln -s /proc/self/fd/2 ${rootdir}/dev/stderr
