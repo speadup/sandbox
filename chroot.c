@@ -150,12 +150,8 @@ int main(int argc, char *argv[])
 
     char *params[32] = {0};
     if(optind >= argc){
-        params[0] = "/bin/bash";
-        params[1] = "-i";
-        params[2] = "-l";
-        params[3] = "-c";
-        params[4] = "exec /bin/bash";
-        params[5] = NULL;
+        params[0] = "-bash";
+        params[1] = NULL;
     } else {
         if(argc - optind >= 32) {
             printf("options too many!");
@@ -166,13 +162,21 @@ int main(int argc, char *argv[])
         }
         params[i] = NULL;
     }
-    char *env[] = {"TERM=xterm", "HOME=/home/compile", "USER=compile", "LOGNAME=compile", "SHELL=/bin/bash", "LANG=en_US.UTF-8", NULL};
+    char *env[] = {
+        "shell=bash",
+        "TERM=xterm",
+        "HOME=/home/compile",
+        "USER=compile",
+        "LOGNAME=compile",
+        "SHELL=/bin/bash",
+        "LANG=en_US.UTF-8",
+        NULL};
     if(uid == 0) {
         env[1] = "HOME=/root";
         env[2] = "USER=root";
         env[3] = "LOGNAME=root";
     }
-    execve(params[0], params, env);
+    execve("/bin/bash", params, env);
     printf("exit:%d\n", errno);
 
     return 0;

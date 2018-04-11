@@ -38,7 +38,7 @@ bsd-mailx
 
 libc6-dev-i386
 libxml-parser-perl
-default-jdk
+#default-jdk
 
 ctags
 cscope

@@ -50,7 +50,7 @@ mkdir -p ${rootdir}/dev/{mapper,shm,pts,net}
 mkdir -p ${rootdir}/{opt,work}
 
 mknod -m600 ${rootdir}/dev/console c 5 1 
-mknod -m666  ${rootdir}/dev/null c 1 3 
+mknod -m666 ${rootdir}/dev/null c 1 3 
 mknod -m666 ${rootdir}/dev/random c 1 8 
 mknod -m660 ${rootdir}/dev/rtc0 c 253 0
 mknod -m666 ${rootdir}/dev/tty c 5 0 

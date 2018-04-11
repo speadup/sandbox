@@ -10,6 +10,7 @@ if !empty(glob(s:rtpath . '/Vundle.vim'))
 call vundle#begin(s:rtpath)
 
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'editorconfig/editorconfig-vim'
 Plugin 'WolfgangMehner/bash-support'
 Plugin 'WolfgangMehner/lua-support'
 Plugin 'WolfgangMehner/perl-support'
@@ -181,7 +182,7 @@ set tags=tags,.tags
 "let g:DoxygenToolkit_returnTag="@Returns   "
 "let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------------------"
 "let g:DoxygenToolkit_blockFooter="----------------------------------------------------------------------------"
-let g:DoxygenToolkit_authorName="liguo"
+"let g:DoxygenToolkit_authorName=""
 "let g:DoxygenToolkit_licenseTag=""
 "let g:DoxygenToolkit_briefTag_funcName="yes"
 let g:doxygen_enhanced_color=1
